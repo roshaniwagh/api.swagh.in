@@ -3,6 +3,9 @@ name: Run API Automation Tests
 on:
   repository_dispatch:
     types: [run-api-tests]
+  push:
+    branches:
+      - master
 
 jobs:
   run-tests:
@@ -18,19 +21,26 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: "3.13"
 
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Run Tests and Generate Report
+      - name: Run Tests and Generate HTML Report
         run: |
           pytest -v --html=report.html --self-contained-html
+
+      - name: Prepare GitHub Pages Folder
+        run: |
+          mkdir public
+          mv report.html public/index.html
 
       - name: Deploy Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          github_token: ${{ github.token }}
+          publish_dir: public
           publish_branch: gh-pages
           keep_files: false
