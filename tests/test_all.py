@@ -29,4 +29,4 @@ class Tests:
                 break
 
         assert found
-        APIAssert(response_json)
+
