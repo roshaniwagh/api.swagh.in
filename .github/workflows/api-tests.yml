@@ -20,4 +20,11 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest -v -s
+        run: |
+          pytest -v -s --html=report.html --self-contained-html
+          - name: Upload Pytest Report
+            if:always()
+            uses: actions/upload-artifact@v4
+            with:
+              name: pytest-html-report
+              path: report.html
