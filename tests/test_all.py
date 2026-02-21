@@ -1,10 +1,3 @@
-from http.client import responses
-
-from IPython.lib.deepreload import found_now
-
-from core.api_client import req
-from endpoints.department_endpoints import Department
-from endpoints.user_endpoints import UserEP
 from services.department_services import add_department, get_all_department
 from utils.excel_utils import read_data, randomize_record
 
